@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './Todo.css';
 
 const Todo = () => {
   const [tasks, setTasks] = useState([]);
@@ -19,21 +21,21 @@ const Todo = () => {
 
   const addTask = () => {
     if (newTask.trim() !== '') {
-      setTasks([...tasks, { task: newTask, dueDate, completed: false }]);
+      setTasks([...tasks, { id: Date.now(), task: newTask, dueDate, completed: false }]);
       setNewTask('');
       setDueDate('');
     }
   };
 
-  const removeTask = (index) => {
-    const updatedTasks = [...tasks];
-    updatedTasks.splice(index, 1);
+  const removeTask = (id) => {
+    const updatedTasks = tasks.filter((task) => task.id !== id);
     setTasks(updatedTasks);
   };
 
-  const toggleTaskCompletion = (index) => {
-    const updatedTasks = [...tasks];
-    updatedTasks[index].completed = !updatedTasks[index].completed;
+  const toggleTaskCompletion = (id) => {
+    const updatedTasks = tasks.map((task) =>
+      task.id === id ? { ...task, completed: !task.completed } : task
+    );
     setTasks(updatedTasks);
   };
 
@@ -61,36 +63,46 @@ const Todo = () => {
           </button>
         </div>
       </div>
-      <ul className="list-group">
-        {tasks.map((task, index) => (
-          <li
-            key={index}
-            className={`list-group-item ${task.completed ? 'list-group-item-success' : ''}`}
+      <TransitionGroup className="list-group">
+        {tasks.map((task) => (
+          <CSSTransition
+            key={task.id}
+            timeout={{ enter: 300, exit: 300 }}
+            classNames={{
+              enter: 'task-check-enter',
+              enterActive: 'task-check-enter-active',
+              exit: 'task-check-exit',
+              exitActive: 'task-check-exit-active',
+            }}
           >
-            <div className="d-flex justify-content-between align-items-center">
-              <div className="d-flex align-items-center">
-                <input
-                  type="checkbox"
-                  checked={task.completed}
-                  onChange={() => toggleTaskCompletion(index)}
-                  className="mr-2"
-                />
-                <span>{task.task}</span>
+            <li
+              className={`list-group-item ${task.completed ? 'list-group-item-success' : ''}`}
+            >
+              <div className="d-flex justify-content-between align-items-center">
+                <div className="d-flex align-items-center">
+                  <input
+                    type="checkbox"
+                    checked={task.completed}
+                    onChange={() => toggleTaskCompletion(task.id)}
+                    className="mr-2"
+                  />
+                  <span>{task.task}</span>
+                </div>
+                <div>
+                  {task.dueDate && (
+                    <span className="mr-2">
+                      Due: {new Date(task.dueDate).toLocaleString()}
+                    </span>
+                  )}
+                  <button className="btn btn-danger" onClick={() => removeTask(task.id)}>
+                    Remove
+                  </button>
+                </div>
               </div>
-              <div>
-                {task.dueDate && (
-                  <span className="mr-2">
-                    Due: {new Date(task.dueDate).toLocaleString()}
-                  </span>
-                )}
-                <button className="btn btn-danger" onClick={() => removeTask(index)}>
-                  Remove
-                </button>
-              </div>
-            </div>
-          </li>
+            </li>
+          </CSSTransition>
         ))}
-      </ul>
+      </TransitionGroup>
     </div>
   );
 };
