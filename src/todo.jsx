@@ -39,8 +39,8 @@ const Todo = () => {
 
   return (
     <div className="container mt-5">
-      <h1>Todo App</h1>
-      <p>Current Date and Time: {currentDateTime}</p>
+      <h1 className="text-center">Todo App</h1>
+      <p className="text-center">Current Date and Time: {currentDateTime}</p>
       <div className="input-group mb-3">
         <input
           type="text"
@@ -55,21 +55,27 @@ const Todo = () => {
           value={dueDate}
           onChange={(e) => setDueDate(e.target.value)}
         />
-        <button className="btn btn-primary" onClick={addTask}>
-          Add
-        </button>
+        <div className="input-group-append">
+          <button className="btn btn-primary" onClick={addTask}>
+            Add
+          </button>
+        </div>
       </div>
       <ul className="list-group">
         {tasks.map((task, index) => (
-          <li key={index} className={`list-group-item ${task.completed ? 'list-group-item-success' : ''}`}>
+          <li
+            key={index}
+            className={`list-group-item ${task.completed ? 'list-group-item-success' : ''}`}
+          >
             <div className="d-flex justify-content-between align-items-center">
-              <div>
+              <div className="d-flex align-items-center">
                 <input
                   type="checkbox"
                   checked={task.completed}
                   onChange={() => toggleTaskCompletion(index)}
+                  className="mr-2"
                 />
-                <span className="ml-2">{task.task}</span>
+                <span>{task.task}</span>
               </div>
               <div>
                 {task.dueDate && (
