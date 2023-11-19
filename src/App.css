@@ -1,0 +1,27 @@
+h1 {
+  font-size: 50px;
+  font-weight: 700;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin-top: 20px; 
+  margin-bottom: 20px;
+}
+
+button {
+  min-width: 150px;
+}
+
+
+
+#root {
+  text-align: center;
+
+}
+
+.app{
+  margin-left: 100px;
+  margin-right: 100px;
+}
+
+#item{
+  margin: 30px;
+}
