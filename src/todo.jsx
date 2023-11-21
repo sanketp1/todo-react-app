@@ -86,11 +86,11 @@ const Todo = () => {
                     onChange={() => toggleTaskCompletion(task.id)}
                     className="mr-2"
                   />
-                  <span>{task.task}</span>
+                  <span className='task' >{task.task}</span>
                 </div>
                 <div>
                   {task.dueDate && (
-                    <span className="mr-2">
+                    <span className="mr-2 duedate">
                       Due: {new Date(task.dueDate).toLocaleString()}
                     </span>
                   )}

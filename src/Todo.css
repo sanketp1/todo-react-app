@@ -6,6 +6,15 @@
     opacity: 1;
     transition: opacity 500ms;
   }
+
+.duedate {
+  margin-right: 5px;
+}
+
+.task{
+  margin-left: 5px;
+}
+
   
   .fade-exit {
     opacity: 1;
